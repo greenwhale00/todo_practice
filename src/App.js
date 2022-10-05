@@ -1,24 +1,82 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef, useState } from "react";
+import { Link, NavLink, Route, Routes } from "react-router-dom";
+import TodoList from './TodoList'
+import TodoWrite from "./TodoWrite";
 
 function App() {
+
+
+
+  const [word, setWord] = useState({});
+  const [list, setList] = useState([]);
+
+  const num = useRef(1);
+  const inputTitle = useRef(null);
+  const inputContent = useRef(null);
+
+  const handlerWord = (e) => {
+    const { name, value } = e.target;
+    setWord({
+      ...word,
+      [name]: value,
+      id: num.current
+    })
+  }
+
+  const hg = /^[ㄱㅎ]*$/;
+
+
+
+  const handlerList = () => {
+    if (word.title.length < 5) {
+      alert('더 입력해');
+      //1. 입력창을비운다. , 2. 그 입력창에 포커스를 준다.
+      setWord({
+        ...word,
+        title: ""
+      });
+      inputTitle.current.focus();
+      return
+    }
+    if (word.content.length < 5) {
+      alert('더 입력해');
+      //1. 입력창을비운다. , 2. 그 입력창에 포커스를 준다.
+      setWord({
+        ...word,
+        content: ""
+      });
+      inputContent.current.focus();
+      return
+    }
+    setList([...list, word]);
+    setWord({
+      title: "",
+      content: "",
+    })
+    num.current++
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <nav>
+        <NavLink to='/'>Home</NavLink>
+        <NavLink to='/Board'>Board</NavLink>
+        <NavLink to='/Write'>Write</NavLink>
+      </nav>
+
+      <Routes>
+        <Route path='/' element={<TodoList list={list} />} />
+        <Route path='/Board' element={<TodoList list={list} />} />
+        <Route path='/Write' element={<TodoWrite list={list} word={word} handlerWord={handlerWord} handlerList={handlerList} inputTitle={inputTitle} />} />
+      </Routes>
+
+
+
+
+
+
     </div>
+
   );
 }
 
