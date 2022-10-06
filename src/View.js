@@ -12,7 +12,7 @@ const View = ({ boardList, setBoardList }) => {
         GO('/board')
     }
     const modifyHandler = () => {
-
+        GO('/MODIFY/' + v.id)
     }
 
     return (
@@ -21,7 +21,8 @@ const View = ({ boardList, setBoardList }) => {
             <div>{v.title}</div>
             <div>{v.content}</div>
             <div>{v.date}</div>
-            <button></button>
+            <button onClick={modifyHandler}>MODIFY</button>
+            <button onClick={deleteHandler}>DELETE</button>
         </div>
     )
 }
